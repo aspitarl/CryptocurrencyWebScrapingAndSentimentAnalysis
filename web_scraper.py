@@ -96,11 +96,18 @@ def convert_date_to_unix_time(date_local):
 
     return date_local
 
+def convert_unixarray_timesamparray(intarray_unix):
+    datetimearray=[]
+    for unix in intarray_unix:
+        datetimearray.append(datetime.fromtimestamp(unix))
+        
+    return datetimearray
+
 
 def scrape_forums(url, allowed_domain, max_pages):
     sys.setrecursionlimit(10000)
     process = CrawlerProcess({
-        'USER_AGENT': 'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1)'
+        #'USER_AGENT': 'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1)'
     })
 
     spider = ForumSpider()
@@ -127,7 +134,7 @@ def scrape_subreddit(subreddit, submission_limit):
                          user_agent=user_agent)
 
     for submission in reddit.subreddit(subreddit).hot(limit=submission_limit):
-        dates .append(submission.created)
+        dates.append(submission.created)
         texts.append(submission.selftext)
 
         for comment in submission.comments[:]:
@@ -136,11 +143,11 @@ def scrape_subreddit(subreddit, submission_limit):
                 texts.append(comment.body)
             else:
                 pass
-
+    
     return dates, texts
 
 
-def scrape_subreddits(subreddits, submission_limit):
+def scrape_subreddits(subreddits, submission_limit, timestampcutoff):
     dates_local = []
     texts_local = []
     for subreddit in subreddits:
@@ -148,5 +155,20 @@ def scrape_subreddits(subreddits, submission_limit):
 
         dates_local += dates_temp
         texts_local += texts_temp
+        
+    zipped = sorted(zip(dates_local,texts_local))
+    
+    dates_local_temp= [x for x , y in zipped]
+    texts_local_temp= [x for y , x in zipped]
+    
+    dates_local = []
+    texts_local = []
+    
+    i=0
+    for timestamp in dates_local_temp:
+        if timestamp > timestampcutoff:
+            dates_local.append(dates_local_temp[i])
+            texts_local.append(texts_local_temp[i])
+        i=i+1
 
     return dates_local, texts_local
