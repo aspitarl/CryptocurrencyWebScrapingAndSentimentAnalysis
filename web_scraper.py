@@ -151,6 +151,7 @@ def scrape_subreddits(subreddits, submission_limit, timestampcutoff):
     dates_local = []
     texts_local = []
     for subreddit in subreddits:
+        print("Scraping " + str(subreddit) + "...")
         dates_temp, texts_temp = scrape_subreddit(subreddit, submission_limit)
 
         dates_local += dates_temp
