@@ -1,38 +1,32 @@
-
+# grow_log: what it means to csv
 import os
-
 import datetime as dt
-
 import pandas as pd
 
-from web_scraper import scrape_subreddits
-
+from web_scraper import scrape_subreddits, scrape_forums
 from constants import subreddits_return
 
-
 def utc_to_local(utc_dt):
+    print(type(utc_dt))
+    # UTC timestamp to local time
     return utc_dt.replace(tzinfo=dt.timezone.utc).astimezone(tz=None)
 
 def update_csv(rawtext_csvfile = None, subreddits = None):
-    
+
     if rawtext_csvfile == None:
         folder = os.path.dirname(os.path.abspath("__file__"))
         rawtext_csvfile = folder + "\\rawtext.csv"
     if subreddits == None:
         subreddits = subreddits_return()
 
-
-    
-    """
+    # KYLE DEBUG
     forum_urls = ["https://bitcointalk.org/index.php?board=5.0", "https://bitcointalk.org/index.php?board=7.0",
                   "https://bitcointalk.org/index.php?board=8.0"]
     allowed_domains = ["bitcointalk.org",]
     dates_forums, texts_forums= scrape_forums(forum_urls, allowed_domains, max_pages=20)
-    """
-    
-    
-    
+
     file_exists = os.path.isfile(rawtext_csvfile)
+    # KYLE DEBUG
     
     if(file_exists):
         rawtext_read = pd.read_csv(rawtext_csvfile, encoding = "ISO-8859-1")

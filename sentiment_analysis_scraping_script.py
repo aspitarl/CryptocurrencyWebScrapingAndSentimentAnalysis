@@ -16,10 +16,9 @@ if __name__ == '__main__':
 
     #TODO: have a dates and text column for each website(combine in data analysis?)    
 
-    #update_csv()
+    update_csv()
     #dates, texts = read_from_csv(24*60*60)
-    
+    #
     #currencies = analyse_data(dates, texts)
 
     #plot_data(currencies)
-    print("hello")
