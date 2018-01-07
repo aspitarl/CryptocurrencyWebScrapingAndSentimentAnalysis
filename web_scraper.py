@@ -3,7 +3,11 @@ import scrapy
 import pickle
 import os
 import sys
-from datetime import datetime, date, time
+import tweepy
+
+from API_settings import twitter_key, twitter_secret,twitter_access_token, twitter_access_token_secret 
+
+from datetime import datetime, date, time, timezone
 from time import mktime
 from bs4 import BeautifulSoup
 from scrapy.crawler import CrawlerProcess
@@ -36,7 +40,6 @@ class ForumSpider(scrapy.Spider):
 
     def read_posts_bitcointalk(self, response):
         url_post_string = ['topic', ]
-
         if any(substring in response.url for substring in url_post_string):
             self.pages_crawled += 1
             self.check_max_pages()
@@ -84,6 +87,10 @@ class ForumSpider(scrapy.Spider):
     def check_max_pages(self):
         if self.pages_crawled > self.max_pages:
             raise CloseSpider(reason='Page number exceeded')
+
+def utc_to_local(utc_dt):
+    # UTC timestamp to local time
+    return utc_dt.replace(tzinfo=timezone.utc).astimezone(tz=None)
 
 
 def convert_date_to_unix_time(date_local):
@@ -134,12 +141,12 @@ def scrape_subreddit(subreddit, submission_limit):
                          user_agent=user_agent)
 
     for submission in reddit.subreddit(subreddit).hot(limit=submission_limit):
-        dates.append(submission.created)
+        dates.append(submission.created_utc)
         texts.append(submission.selftext)
 
         for comment in submission.comments[:]:
             if hasattr(comment, 'created'):
-                dates.append(comment.created)
+                dates.append(comment.created_utc)
                 texts.append(comment.body)
             else:
                 pass
@@ -173,3 +180,37 @@ def scrape_subreddits(subreddits, submission_limit, timestampcutoff):
         i=i+1
 
     return dates_local, texts_local
+
+def scrape_twitter(timestampcutoff):
+    dates_twitter = []
+    texts_twitter = []
+    
+    auth = tweepy.OAuthHandler(twitter_key, twitter_secret)
+    auth.set_access_token(twitter_access_token, twitter_access_token_secret)
+    api = tweepy.API(auth)
+    
+    reached_timestamp=0
+    page_number = 1
+    while(reached_timestamp==0):
+        print("reading page number " + str(page_number))
+        try:
+            public_tweets = api.home_timeline(page=page_number)
+            for tweet in public_tweets:
+                localtime = utc_to_local(tweet.created_at)
+                localtime = localtime.timestamp()
+                if(localtime > timestampcutoff ) :   
+                    dates_twitter.append(localtime)
+                    texts_twitter.append(tweet.text)
+                else:
+                    reached_timestamp=1
+                    break
+        except tweepy.error.RateLimitError:
+            print("rate limit error")
+            reached_timestamp == 2
+            break
+        page_number = page_number+1
+    
+    dates_twitter = list(reversed(dates_twitter))
+    texts_twitter = list(reversed(texts_twitter))
+    
+    return dates_twitter, texts_twitter

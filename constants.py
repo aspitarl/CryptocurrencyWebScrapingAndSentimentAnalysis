@@ -1,7 +1,21 @@
 # -*- coding: utf-8 -*-
 
-def subreddits_return():
-    subreddits = ["Agrello",
+import datetime as dt
+
+timestart = dt.datetime(2018,1,5,0,0,0)
+
+
+keywords = {
+        'BTC': {
+                'keywords' : ['bitcoin', 'bitcoins', 'xbt', 'btc', 'Bitcoin', 'Bitcoins', 'BTC', 'XBT']},
+        'ETH': {
+                'keywords' : ['ethereum', 'Ethereum', 'eth', 'ETH', 'ether', 'Ether']},
+        'LTC': {
+                'keywords' : ['litecoin', 'Litecoin', 'ltc', 'LTC']}
+        }
+
+
+subreddits = ["Agrello",
 "altcoin",
 "altcoin_news",
 "ArkEcosystem",
@@ -94,4 +108,3 @@ def subreddits_return():
 "XRP",
 "zcash_uncensored",
 "zec"]
-    return subreddits

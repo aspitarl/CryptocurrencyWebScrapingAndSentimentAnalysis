@@ -3,6 +3,8 @@ import math
 from nltk.sentiment.vader import SentimentIntensityAnalyzer as SIA
 import pandas as pd
 
+import constants
+
 
 
 def analyse_text(text, keywords):
@@ -45,22 +47,14 @@ def analyse_sentiments(dates_local, texts_local, keywords):
 
 
 
-def analyse_data(dates, texts, keywords = None):
+def analyse_data(dates, texts):
     """
     #takes in raw text data and does a sentiment analysis for each coin in the 
     keywords argument. outputs dataframe containing the relevant commement and 
     it's sentiment analysis
     """
-    
-    if keywords == None:
-        keywords = {
-                'BTC': {
-                        'keywords' : ['bitcoin', 'bitcoins', 'xbt', 'btc', 'Bitcoin', 'Bitcoins', 'BTC', 'XBT']},
-                'ETH': {
-                        'keywords' : ['ethereum', 'Ethereum', 'eth', 'ETH', 'ether', 'Ether']},
-                'LTC': {
-                        'keywords' : ['litecoin', 'Litecoin', 'ltc', 'LTC']}
-                }
+    keywords = constants.keywords
+
     data_sentiment = pd.DataFrame(keywords)
     data_sentiment = data_sentiment.T
     
