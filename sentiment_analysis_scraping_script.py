@@ -16,6 +16,7 @@ if __name__ == '__main__':
 
     #TODO: have a dates and text column for each website(combine in data analysis?)    
 
+<<<<<<< HEAD
     #update_csv()
     
     dates, texts = read_from_csv(24*60*60)
@@ -23,3 +24,6 @@ if __name__ == '__main__':
     data_sentiment = analyse_data(dates, texts)
 
     plot_data(data_sentiment)
+=======
+
+>>>>>>> 86af4b669a2f91b1f938fba67544a7189f0c86e3
