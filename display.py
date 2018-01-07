@@ -17,7 +17,8 @@ from web_scraper import convert_unixarray_timesamparray
     #TODO: rolling average (bin?, deal with blank streches with previous value?)
     #TODO: also plot price data (right axis?)
 def plot_data(currencies):
-
+    
+    
     
     num_currencies = currencies.shape[0]  
     figsize = plt.figaspect(1/num_currencies)

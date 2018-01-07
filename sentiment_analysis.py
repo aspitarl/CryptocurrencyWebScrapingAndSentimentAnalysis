@@ -46,6 +46,12 @@ def analyse_sentiments(dates_local, texts_local, keywords):
 
 
 def analyse_data(dates, texts, keywords = None):
+    """
+    #takes in raw text data and does a sentiment analysis for each coin in the 
+    keywords argument. outputs dataframe containing the relevant commement and 
+    it's sentiment analysis
+    """
+    
     if keywords == None:
         keywords = {
                 'BTC': {
@@ -55,26 +61,26 @@ def analyse_data(dates, texts, keywords = None):
                 'LTC': {
                         'keywords' : ['litecoin', 'Litecoin', 'ltc', 'LTC']}
                 }
-    currencies = pd.DataFrame(keywords)
-    currencies = currencies.T
+    data_sentiment = pd.DataFrame(keywords)
+    data_sentiment = data_sentiment.T
     
         #analyse the recieved text
-    num_currencies = currencies.shape[0]
+    num_data_sentiment = data_sentiment.shape[0]
     
-    sentiments = [[0]]*num_currencies
-    date_coinspecific = [[0]]*num_currencies
-    texts_coinspecific = [[0]]*num_currencies
+    sentiments = [[0]]*num_data_sentiment
+    date_coinspecific = [[0]]*num_data_sentiment
+    texts_coinspecific = [[0]]*num_data_sentiment
     
 
     i=0
-    for ticker, keywords in currencies.itertuples():
+    for ticker, keywords in data_sentiment.itertuples():
         print("Analysing " + str(ticker))
         date_coinspecific[i], texts_coinspecific[i], sentiments[i] = analyse_sentiments(dates.as_matrix(), texts.as_matrix(), keywords)
         i=i+1
         
-    currencies['dates'] = pd.Series(date_coinspecific, index=currencies.index)
-    currencies['texts_nltk'] = pd.Series(texts_coinspecific, index=currencies.index)
-    currencies['sentiments'] = pd.Series(sentiments, index=currencies.index)
+    data_sentiment['dates'] = pd.Series(date_coinspecific, index=data_sentiment.index)
+    data_sentiment['texts_nltk'] = pd.Series(texts_coinspecific, index=data_sentiment.index)
+    data_sentiment['sentiments'] = pd.Series(sentiments, index=data_sentiment.index)
     
-    return currencies
+    return data_sentiment
     
