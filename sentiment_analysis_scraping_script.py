@@ -20,12 +20,12 @@ if __name__ == '__main__':
     #update_csv()
     
     #pulls out     
-    dates, texts = read_from_csv(24*60*60)
+    #dates, texts = read_from_csv(24*60*60)
     
-    data_sentiment = analyse_data(dates, texts)
+    #data_sentiment = analyse_data(dates, texts)
 
-    data_shape = shape_data(data_sentiment)
+    #data_shape = shape_data(data_sentiment)
 
-    plot_data(data_shape)
-
+    #plot_data(data_shape)
+    pass
 

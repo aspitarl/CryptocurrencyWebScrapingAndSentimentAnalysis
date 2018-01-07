@@ -25,7 +25,7 @@ def update_csv(rawtext_csvfile = None, subreddits = None):
     allowed_domains = ["bitcointalk.org",]
     dates_forums, texts_forums= scrape_forums(forum_urls, allowed_domains, max_pages=20)
     # KYLE DEBUG
-
+    """
     file_exists = os.path.isfile(rawtext_csvfile)
 
     if(file_exists):
@@ -48,7 +48,8 @@ def update_csv(rawtext_csvfile = None, subreddits = None):
         raw_text.to_csv(rawtext_csvfile, mode = 'a+', header = True)
 
     print("Added " + str(len(dates)) + " new comments")
-
+    """
+    
 def read_from_csv(window = None, endtime = None, rawtext_csvfile = None):
     if rawtext_csvfile == None:
         folder = os.path.dirname(os.path.abspath("__file__"))
