@@ -1,9 +1,14 @@
 # -*- coding: utf-8 -*-
 
 import datetime as dt
+import os
 
 timestart = dt.datetime(2018,1,5,0,0,0)
 
+
+folder = os.path.dirname(os.path.abspath("__file__")) + "\\Raw_Data"
+rawtext_csvfile_reddit = folder + "\\rawtext_reddit.csv"
+rawtext_csvfile_twitter = folder + "\\rawtext_twitter.csv"
 
 keywords = {
         'BTC': {

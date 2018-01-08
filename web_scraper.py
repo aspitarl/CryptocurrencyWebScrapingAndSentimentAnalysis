@@ -23,6 +23,9 @@ date_word_list = [
 
 
 class ForumSpider(scrapy.Spider):
+    """
+    Scrapy object to scrape bitcointalk and other forums, couldn't get it working correctly. 
+    """
     name = "forums"
     auto_throttle_enabled = True
     download_delay = 1.5
@@ -89,7 +92,7 @@ class ForumSpider(scrapy.Spider):
             raise CloseSpider(reason='Page number exceeded')
 
 def utc_to_local(utc_dt):
-    # UTC timestamp to local time
+    #sets the timezone of a timestamp object to local time
     return utc_dt.replace(tzinfo=timezone.utc).astimezone(tz=None)
 
 
@@ -182,6 +185,10 @@ def scrape_subreddits(subreddits, submission_limit, timestampcutoff):
     return dates_local, texts_local
 
 def scrape_twitter(timestampcutoff):
+    """
+    Reads data off of a twitter account, note you are limited to 15 requests at atime
+    it currrently reads page by page (20 tweets) until it reaches timestamp cutoff
+    """
     dates_twitter = []
     texts_twitter = []
     
